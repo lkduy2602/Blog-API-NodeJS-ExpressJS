@@ -11,6 +11,8 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import hpp from "hpp";
 
+import { errorHandler } from "./middlewares/error";
+
 import "dotenv/config";
 
 import { DBconnection } from "./configs/db";
@@ -54,11 +56,13 @@ const versionOne = (routeName) => `/api/v1/${routeName}`;
 
 app.use(versionOne("auth"), authRoute);
 
-const hostname = process.env.HOSTNAME || "localhost";
-const port = process.env.PORT || 5000;
+app.use(errorHandler);
 
-const server = app.listen(port, () => {
-  console.log(`Server is running at http://${hostname}:${port}/`);
+const HOSTNAME = process.env.HOSTNAME || "localhost";
+const PORT = process.env.PORT || 5000;
+
+const server = app.listen(PORT, () => {
+  console.log(`Server is running at http://${HOSTNAME}:${PORT}/`);
 });
 
 process.on("unhandledRejection", (err, promise) => {
