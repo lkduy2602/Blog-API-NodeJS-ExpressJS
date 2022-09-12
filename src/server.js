@@ -11,7 +11,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import hpp from "hpp";
 
-require("dotenv").config({ path: path.resolve(__dirname, "./configs/.env") });
+import "dotenv/config";
 
 import { DBconnection } from "./configs/db";
 
@@ -59,4 +59,10 @@ const port = process.env.PORT || 5000;
 
 const server = app.listen(port, () => {
   console.log(`Server is running at http://${hostname}:${port}/`);
+});
+
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`Error: ${err.message}`);
+
+  server.close(() => process.exit(1));
 });
