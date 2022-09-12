@@ -3,7 +3,11 @@ import path from "path";
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import "dotenv/config";
+require("dotenv").config({ path: path.resolve(__dirname, "./configs/.env") });
+
+import { DBconnection } from "./configs/db";
+
+DBconnection();
 
 const app = express();
 
