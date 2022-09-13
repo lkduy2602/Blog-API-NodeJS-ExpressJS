@@ -1,7 +1,9 @@
 import { asyncHandler } from "../middlewares/async";
 import ErrorResponse from "../utils/errorResponse";
+import crypto from "crypto";
 
 import User from "../models/User";
+import { sendEmail } from "../utils/sendEmail";
 
 //Đăng ký
 // POST /api/v1/auth/register
@@ -73,7 +75,7 @@ export const getMe = asyncHandler(async (req, res, next) => {
 });
 
 // Cập nhật thông tin tài khoản
-// POST /api/v1/auth/updatedetails
+// PUT /api/v1/auth/updatedetails
 // Private
 export const updateDetails = asyncHandler(async (req, res, next) => {
   const fieldToUpdate = {
@@ -93,7 +95,7 @@ export const updateDetails = asyncHandler(async (req, res, next) => {
 });
 
 // Cập nhật mật khẩu
-// POST /api/v1/auth/updatepassword
+// PUT /api/v1/auth/updatepassword
 // Private
 export const updatePassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
@@ -103,6 +105,82 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
   }
 
   user.password = req.body.newPassword;
+
+  await user.save();
+
+  sendTokenResponse(user, 200, res);
+});
+
+// Gửi email quên mật khẩu
+// POST /api/v1/auth/forgotpassword
+// Public
+export const forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(
+      new ErrorResponse("Chưa có tài khoản nào được tạo bằng email này", 403)
+    );
+  }
+
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/auth/resetpassword/${resetToken}`;
+
+  const message = `Bạn nhận được email này vì bạn đã yêu cầu đặt lại mật khẩu. ${resetUrl}`;
+
+  console.log(resetUrl);
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Đặt lại mật khẩu",
+      message,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: "Đã gửi email đặt lại mật khẩu",
+    });
+  } catch (err) {
+    console.log(err);
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(new ErrorResponse("Không thể gửi được Email", 500));
+  }
+});
+
+// Đổi mật khẩu khi nhận được email
+// PUT /api/v1/auth/resetpassword/:resettoken
+// Public
+export const resetPassword = asyncHandler(async (req, res, next) => {
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resettoken)
+    .digest("hex");
+
+  console.log(resetPasswordToken);
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new ErrorResponse("Mã token không hợp lệ", 400));
+  }
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
 
   await user.save();
 
