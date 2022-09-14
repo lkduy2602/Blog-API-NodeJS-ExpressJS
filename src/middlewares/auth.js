@@ -27,3 +27,14 @@ export const protect = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Không có quyền truy cập"), 401);
   }
 });
+
+export const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ErrorResponse(`${req.user.role} không có quyền truy cập`, 403)
+      );
+    }
+    next();
+  };
+};

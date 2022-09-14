@@ -20,6 +20,7 @@ import { DBconnection } from "./configs/db";
 DBconnection();
 
 import authRoute from "./routes/auth";
+import userRoute from "./routes/user";
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use(hpp());
 const versionOne = (routeName) => `/api/v1/${routeName}`;
 
 app.use(versionOne("auth"), authRoute);
+app.use(versionOne("users"), userRoute);
 
 app.use(errorHandler);
 

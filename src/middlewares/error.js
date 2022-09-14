@@ -16,7 +16,7 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   if (err.code === 11000) {
-    const message = "Giá trị trường trùng lặp";
+    const message = "Giá trị trùng lặp";
 
     error = new ErrorResponse(message, 400);
   }
