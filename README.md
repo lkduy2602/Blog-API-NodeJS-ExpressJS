@@ -13,6 +13,8 @@ Blog API này là một CRUD cơ bản có thêm phân quyền và xác thực v
 
 ## Tài Liệu API
 
+- Tài liệu API với [PostMan](https://github.com)
+
 ## Các Công Nghệ Chính
 
 - NodeJS
