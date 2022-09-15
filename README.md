@@ -19,3 +19,7 @@ Blog API này là một CRUD cơ bản có thêm phân quyền và xác thực v
 
 - NodeJS
 - MongoDB
+
+## Tài Liệu Tham Khảo
+
+- Code này dựa theo [Github](https://github.com/techreagan/blog-api)
