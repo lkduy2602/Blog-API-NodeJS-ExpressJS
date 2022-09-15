@@ -5,7 +5,7 @@ import crypto from "crypto";
 import User from "../models/User";
 import { sendEmail } from "../utils/sendEmail";
 
-//Đăng ký
+// Đăng ký
 // POST /api/v1/auth/register
 // Public
 export const register = asyncHandler(async (req, res, next) => {

@@ -4,7 +4,7 @@ Blog API này là một CRUD cơ bản có thêm phân quyền và xác thực v
 
 ## Các Chức Năng Chính
 
-- Xác thực bằng JWT (Lấy lại mật khẩu với Email)
+- Xác thực và phân quyền với JWT (Lấy lại mật khẩu dùng Email)
 - CRUD User, Post, Comment
 - Tải lên ảnh banner
 - Có thể bình luận vào bài viết
