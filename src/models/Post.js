@@ -34,12 +34,12 @@ const PostSchema = new Schema(
 
 PostSchema.pre("remove", async function (next) {
   console.log(`Nhận xét đã được xoá khỏi bài viết ${this._id}`);
-  await this.modelName("Comment").deleteMany({ post: this._id });
+  await this.model("Comment").deleteMany({ post: this._id });
 
   next();
 });
 
-PostSchema.virtual("comment", {
+PostSchema.virtual("comments", {
   ref: "Comment",
   localField: "_id",
   foreignField: "post",

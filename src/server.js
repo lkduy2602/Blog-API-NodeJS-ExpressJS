@@ -19,9 +19,10 @@ import { DBconnection } from "./configs/db";
 
 DBconnection();
 
-import authRoute from "./routes/auth";
-import userRoute from "./routes/user";
-import postRoute from "./routes/posts";
+import authRoutes from "./routes/auth";
+import userRoutes from "./routes/user";
+import postRoutes from "./routes/posts";
+import commentRoutes from "./routes/comments";
 
 const app = express();
 
@@ -56,9 +57,10 @@ app.use(hpp());
 
 const versionOne = (routeName) => `/api/v1/${routeName}`;
 
-app.use(versionOne("auth"), authRoute);
-app.use(versionOne("users"), userRoute);
-app.use(versionOne("posts"), postRoute);
+app.use(versionOne("auth"), authRoutes);
+app.use(versionOne("users"), userRoutes);
+app.use(versionOne("posts"), postRoutes);
+app.use(versionOne("comments"), commentRoutes);
 
 app.use(errorHandler);
 
