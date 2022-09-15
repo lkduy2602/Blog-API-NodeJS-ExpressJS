@@ -13,7 +13,7 @@ Blog API này là một CRUD cơ bản có thêm phân quyền và xác thực v
 
 ## Tài Liệu API
 
-- Tài liệu API với [PostMan](https://github.com)
+- Tài liệu API với [PostMan](https://documenter.getpostman.com/view/20545218/2s7YYsc41K)
 
 ## Các Công Nghệ Chính
 
