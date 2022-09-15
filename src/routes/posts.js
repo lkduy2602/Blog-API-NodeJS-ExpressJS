@@ -14,6 +14,10 @@ import Post from "../models/Post";
 
 const router = express.Router();
 
+import commentRoute from "./comments";
+
+router.use("/:id/comments", commentRoute);
+
 router
   .route("/")
   .get(
