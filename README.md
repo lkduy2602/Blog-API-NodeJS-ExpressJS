@@ -4,10 +4,10 @@ Blog API này là một CRUD cơ bản có thêm phân quyền và xác thực v
 
 ## Các Chức Năng Chính
 
-- Xác thực bằng JWT (Quên mật khẩu với Email)
-- CRUD User
+- Xác thực bằng JWT (Lấy lại mật khẩu với Email)
+- CRUD User, Post, Comment
 - Tải lên ảnh banner
-- Có thể bình luận
+- Có thể bình luận vào bài viết
 - Phân trang và tìm kiếm
 - API Security với các thư viện NPM
 
